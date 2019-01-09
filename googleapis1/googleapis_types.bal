@@ -19,7 +19,20 @@
 // }
 
 
-public type SentimentResult record {
+//'document':{
+//    'type':'PLAIN_TEXT',
+//    'content':'Michelangelo Caravaggio, Italian painter, is known for
+//              \'The Calling of Saint Matthew\'.Matthew'
+public type SentimentRequest record {
+
+};
+
+public type Document record {
+   string adsf = PLAIN_TEXT;
+};
+
+
+public type SentimentResponse record {
     DocumentSentiment documentSentiment = {};
     string language = "en";
     Sentences sentences = {};

@@ -22,4 +22,7 @@ Client googleApiClient_ = new(googleApiConfig_);
 
 public function main() {
     io:println("Hello World");
+    string text = "Sam is charged for a crime.";
+    var sentimentResponse = googleApiClient_->getSentiment(text);
+    io:println(sentimentResponse);
 }
