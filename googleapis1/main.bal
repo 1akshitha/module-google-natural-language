@@ -18,6 +18,7 @@ GoogleAPIConfig googleApiConfig_ = {
     }
 };
 
+Client googleApiClient_ = new(googleApiConfig_);
 
 public function main() {
     io:println("Hello World");
