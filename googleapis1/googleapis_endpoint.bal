@@ -9,7 +9,7 @@ public type Client client object {
 
     public function __init(GoogleAPIConfig googleApiConfig) {
         self.init(googleApiConfig);
-        self.googleApiClient = new(BASE_URL, config = googleApiConfig.clientConfig);
+        self.googleApiClient = new(url, config = googleApiConfig.clientConfig);
     }
 
     # Initialize GoogleAPI endpoint.
@@ -34,12 +34,18 @@ public type Client client object {
 
 
 remote function Client.getSentiment(string text) returns http:Response|error {
-    string body = "'document':{
-                    'type':'PLAIN_TEXT',
-                    'content':'Michelangelo Caravaggio, Italian painter, is known for
-                        \'The Calling of Saint Matthew\'.Matthew'";
+    json jsonBody = {
+        document: {
+            "type": "PLAIN_TEXT",
+            "content": text
+        },
+        encodingType: "UTF8"
+    };
+
+    string body = jsonBody.toString();
 
     http:Request request = new;
+    request.setHeader(CONTENT_TYPE, APPLICATION_JSON);
     request.setPayload(body);
 
     http:Response|error httpResponse = self.googleApiClient->post(url, request);
