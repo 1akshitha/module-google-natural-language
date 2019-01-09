@@ -48,3 +48,4 @@ public type Text record {
     string content = "";
     int beginOffset = 0;
 };
+
