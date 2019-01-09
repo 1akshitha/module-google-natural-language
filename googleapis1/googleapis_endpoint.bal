@@ -1,15 +1,13 @@
 import ballerina/http;
 import ballerina/io;
 
-final string url = BASE_URL + ANALYZE_SENTIMENT_URL;
-
 
 public type Client client object {
     public http:Client googleApiClient;
 
     public function __init(GoogleAPIConfig googleApiConfig) {
         self.init(googleApiConfig);
-        self.googleApiClient = new(url, config = googleApiConfig.clientConfig);
+        self.googleApiClient = new(BASE_URL, config = googleApiConfig.clientConfig);
     }
 
     # Initialize GoogleAPI endpoint.
@@ -17,7 +15,7 @@ public type Client client object {
     # + googleApiConfig - GoogleAPI Configuration
     public function init(GoogleAPIConfig googleApiConfig);
 
-    public remote function getSentiment(string text) returns http:Response|error;
+    public remote function getSentiment(string text) returns string|error;
 };
 
 //curl -X POST \
@@ -32,8 +30,7 @@ public type Client client object {
 //  'encodingType':'UTF8'
 //}" "https://language.googleapis.com/v1/documents:analyzeEntities"
 
-
-remote function Client.getSentiment(string text) returns http:Response|error {
+remote function Client.getSentiment(string text) returns string|error {
     json jsonBody = {
         document: {
             "type": "PLAIN_TEXT",
@@ -48,13 +45,16 @@ remote function Client.getSentiment(string text) returns http:Response|error {
     request.setHeader(CONTENT_TYPE, APPLICATION_JSON);
     request.setPayload(body);
 
-    http:Response|error httpResponse = self.googleApiClient->post(url, request);
+    http:Response|error httpResponse = self.googleApiClient->post(ANALYZE_SENTIMENT_URL, request);
 
-    return httpResponse;
+    if(httpResponse is http:Response) {
+        return httpResponse.getPayloadAsString();
+    }else{
+        return httpResponse;
+    }
 }
 
 function Client.init(GoogleAPIConfig googleApiConfig) {
-    io:println("Client.init() executed");
     http:AuthConfig? authConfig = googleApiConfig.clientConfig.auth;
     if (authConfig is http:AuthConfig) {
         authConfig.refreshUrl = REFRESH_TOKEN_EP;

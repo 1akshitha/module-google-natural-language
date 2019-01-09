@@ -1,4 +1,5 @@
 import ballerina/io;
+import ballerina/http;
 
 final string CLIENT_ID = "880218952141-ijug2o3ofeichbhnr7bj63tajvbb4qdj.apps.googleusercontent.com";
 final string CLIENT_SECRET = "RByTuKS74-xb7Jo8_AWs-LDV";
@@ -16,7 +17,6 @@ GoogleAPIConfig googleApiConfig_ = {
             clientSecret: CLIENT_SECRET,
             refreshToken: REFRESH_TOKEN,
             refreshUrl: "https://www.googleapis.com/oauth2/v4/token"
-
         }
     }
 };
@@ -24,7 +24,6 @@ GoogleAPIConfig googleApiConfig_ = {
 Client googleApiClient_ = new(googleApiConfig_);
 
 public function main() {
-    io:println("Hello World");
     string text = "Sam is charged for a crime.";
     var sentimentResponse = googleApiClient_->getSentiment(text);
     io:println(sentimentResponse);
