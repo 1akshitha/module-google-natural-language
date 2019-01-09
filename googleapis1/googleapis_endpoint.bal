@@ -15,7 +15,9 @@ public type Client client object {
     # + googleApiConfig - GoogleAPI Configuration
     public function init(GoogleAPIConfig googleApiConfig);
 
-    public remote function getSentiment(string text) returns string|error;
+    public remote function getSentimentResponsePayload(string text) returns json|error;
+
+    public remote function getDocumentSentiment(string text) returns json|error;
 };
 
 //curl -X POST \
@@ -30,7 +32,7 @@ public type Client client object {
 //  'encodingType':'UTF8'
 //}" "https://language.googleapis.com/v1/documents:analyzeEntities"
 
-remote function Client.getSentiment(string text) returns string|error {
+remote function Client.getSentimentResponsePayload(string text) returns json|error {
     json jsonBody = {
         document: {
             "type": "PLAIN_TEXT",
@@ -48,10 +50,14 @@ remote function Client.getSentiment(string text) returns string|error {
     http:Response|error httpResponse = self.googleApiClient->post(ANALYZE_SENTIMENT_URL, request);
 
     if(httpResponse is http:Response) {
-        return httpResponse.getPayloadAsString();
+        return httpResponse.getJsonPayload();
     }else{
         return httpResponse;
     }
+}
+
+remote function Client.getDocumentSentiment(string text) returns json|error {
+    return null;
 }
 
 function Client.init(GoogleAPIConfig googleApiConfig) {

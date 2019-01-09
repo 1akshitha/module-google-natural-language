@@ -1,5 +1,6 @@
 import ballerina/io;
 import ballerina/http;
+import ballerina/system;
 
 final string CLIENT_ID = "880218952141-ijug2o3ofeichbhnr7bj63tajvbb4qdj.apps.googleusercontent.com";
 final string CLIENT_SECRET = "RByTuKS74-xb7Jo8_AWs-LDV";
@@ -15,8 +16,7 @@ GoogleAPIConfig googleApiConfig_ = {
             accessToken: ACCESS_TOKEN,
             clientId: CLIENT_ID,
             clientSecret: CLIENT_SECRET,
-            refreshToken: REFRESH_TOKEN,
-            refreshUrl: "https://www.googleapis.com/oauth2/v4/token"
+            refreshToken: REFRESH_TOKEN
         }
     }
 };
@@ -25,6 +25,10 @@ Client googleApiClient_ = new(googleApiConfig_);
 
 public function main() {
     string text = "Sam is charged for a crime.";
-    var sentimentResponse = googleApiClient_->getSentiment(text);
-    io:println(sentimentResponse);
+    var sentimentResponse = googleApiClient_->getSentimentResponsePayload(text);
+    if (sentimentResponse is json) {
+        io:println(sentimentResponse.sentences[0].sentiment);
+    } else {
+        io:println("Error");
+    }
 }
