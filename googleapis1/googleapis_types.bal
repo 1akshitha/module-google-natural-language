@@ -19,46 +19,52 @@
 // }
 
 
-//'document':{
-//    'type':'PLAIN_TEXT',
-//    'content':'Michelangelo Caravaggio, Italian painter, is known for
-//              \'The Calling of Saint Matthew\'.Matthew'
-public type SentimentRequest record {
-
-};
-
-public type Document record {
-   string adsf = PLAIN_TEXT;
-};
-
-
 public type SentimentResponse record {
-    DocumentSentiment documentSentiment = {};
-    string language = "en";
-    Sentences sentences = {};
+    DocumentSentiment documentSentiment;
+    string language;
+    Sentence[] sentences;
 };
 
+
+//   "documentSentiment": {
+//     "magnitude": 0.4,
+//     "score": -0.4
+//   },
 public type DocumentSentiment record {
-    float magnitude = 0.0;
-    float score = 0.0;
+    float magnitude;
+    float score;
 };
 
-public type Sentences record {
-    Sentence[] sentences = [];
-};
-
+//     {
+//       "text": {
+//         "content": "Sam was charged with murder.",
+//         "beginOffset": 0
+//       },
+//       "sentiment": {
+//         "magnitude": 0.4,
+//         "score": -0.4
+//       }
+//     }
 public type Sentence record {
-    Text text = {};
-    Sentiment sentiment = {};
+    Text text;
+    Sentiment sentiment;
 };
 
+//       "sentiment": {
+//         "magnitude": 0.4,
+//         "score": -0.4
+//       }
 public type Sentiment record {
     float magnitude = 0.0;
     float score = 0.0;
 };
 
+//       "text": {
+//         "content": "Sam was charged with murder.",
+//         "beginOffset": 0
+//       },
 public type Text record {
-    string content = "";
-    int beginOffset = 0;
+    string content;
+    int beginOffset;
 };
 
