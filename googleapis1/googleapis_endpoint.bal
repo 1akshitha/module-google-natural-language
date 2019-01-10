@@ -15,27 +15,23 @@ public type Client client object {
     # + googleApiConfig - GoogleAPI Configuration
     public function init(GoogleAPIConfig googleApiConfig);
 
+    # Get the json payload of the response after calling the Google's Sentiment Analyzer
+    #
+    # + text - the text to be analyzed
+    # + return - If successful, returns json payload of the response. Else returns error.
     public remote function getSentimentResponsePayload(string text) returns json|error;
 
+    # Get the document sentiment portion of the payload (of the sentiment response)
+    #
+    # + text - the text to be analyzed
+    # + return - If successful, returns json payload of the response. Else returns error.
     public remote function getDocumentSentiment(string text) returns json|error;
 };
-
-//curl -X POST \
-//     -H "Authorization: Bearer "$(gcloud auth application-default print-access-token) \
-//     -H "Content-Type: application/json; charset=utf-8" \
-//     --data "{
-//  'document':{
-//    'type':'PLAIN_TEXT',
-//    'content':'Michelangelo Caravaggio, Italian painter, is known for
-//              \'The Calling of Saint Matthew\'.'
-//  },
-//  'encodingType':'UTF8'
-//}" "https://language.googleapis.com/v1/documents:analyzeEntities"
 
 remote function Client.getSentimentResponsePayload(string text) returns json|error {
     json jsonBody = {
         document: {
-            "type": "PLAIN_TEXT",
+            "type": PLAIN_TEXT,
             "content": text
         },
         encodingType: "UTF8"
@@ -49,15 +45,20 @@ remote function Client.getSentimentResponsePayload(string text) returns json|err
 
     http:Response|error httpResponse = self.googleApiClient->post(ANALYZE_SENTIMENT_URL, request);
 
-    if(httpResponse is http:Response) {
+    if (httpResponse is http:Response) {
         return httpResponse.getJsonPayload();
-    }else{
+    } else {
         return httpResponse;
     }
 }
 
 remote function Client.getDocumentSentiment(string text) returns json|error {
-    return null;
+    var sentimentResponse = self->getSentimentResponsePayload(text);
+    if (sentimentResponse is json) {
+        return sentimentResponse.documentSentiment;
+    } else {
+        return sentimentResponse;
+    }
 }
 
 function Client.init(GoogleAPIConfig googleApiConfig) {

@@ -24,10 +24,17 @@ GoogleAPIConfig googleApiConfig_ = {
 Client googleApiClient_ = new(googleApiConfig_);
 
 public function main() {
-    string text = "Sam is charged for a crime.";
+    string text = "Sam is charged for a crime. John was let go by the commanding officer.";
     var sentimentResponse = googleApiClient_->getSentimentResponsePayload(text);
     if (sentimentResponse is json) {
         io:println(sentimentResponse.sentences[0].sentiment);
+    } else {
+        io:println("Error");
+    }
+
+    var documentSentiment = googleApiClient_->getDocumentSentiment(text);
+    if (documentSentiment is json) {
+        io:println(documentSentiment);
     } else {
         io:println("Error");
     }
