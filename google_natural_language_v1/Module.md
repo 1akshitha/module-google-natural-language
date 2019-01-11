@@ -37,10 +37,10 @@ google_natural_language:GoogleAPIConfig googleApiConfig = {
     clientConfig: {
         auth: {
             scheme: http:OAUTH2,
-            accessToken: testAccessToken,
-            clientId: testClientId,
-            clientSecret: testClientSecret,
-            refreshToken: testRefreshToken
+            accessToken: "Your Access Token",
+            clientId: "Your Client ID",
+            clientSecret: "Your Client Secret",
+            refreshToken: "Your Refresh Token" 
         }
     }
 };
