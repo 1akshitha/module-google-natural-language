@@ -28,10 +28,11 @@ type Data record {
 };
 
 public function main() {
-    string text = "Sam is charged for a crime. John was let go by the commanding officer.";
-    var sentimentResponse = googleApiClient_->getSentimentResponsePayload(text);
-    io:println(sentimentResponse);
+    string text1 = "It is fun and easy to do sentiment analysis";
+    var sentimentResponse1 = googleApiClient_->getSentimentResponsePayload(text1);
+    io:println(sentimentResponse1);
 
-    var documentSentiment = googleApiClient_->getDocumentSentiment(text);
-    io:println(documentSentiment);
+    string text2 = "I don't like Pizza!";
+    var sentimentResponse2 = googleApiClient_->getSentimentResponsePayload(text2);
+    io:println(sentimentResponse2);
 }
