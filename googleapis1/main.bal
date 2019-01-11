@@ -28,20 +28,10 @@ type Data record {
 };
 
 public function main() {
-
     string text = "Sam is charged for a crime. John was let go by the commanding officer.";
     var sentimentResponse = googleApiClient_->getSentimentResponsePayload(text);
-    if (sentimentResponse is SentimentResponse) {
-        io:println(sentimentResponse);
-    } else {
-        io:println("main()::Error");
-        io:println(sentimentResponse);
-    }
+    io:println(sentimentResponse);
 
-    //var documentSentiment = googleApiClient_->getDocumentSentiment(text);
-    //if (documentSentiment is SentimentResponse) {
-    //    io:println("Document Sentiment: ", documentSentiment);
-    //} else {
-    //    io:println("Error");
-    //}
+    var documentSentiment = googleApiClient_->getDocumentSentiment(text);
+    io:println(documentSentiment);
 }

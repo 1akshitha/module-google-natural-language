@@ -19,16 +19,16 @@ public type Client client object {
     #
     # + text - the text to be analyzed
     # + return - If successful, returns json payload of the response. Else returns error.
-    public remote function getSentimentResponsePayload(string text) returns SentimentResponse|error;
+    public remote function getSentimentResponsePayload(string text) returns json|error;
 
-    //# Get the document sentiment portion of the payload (of the sentiment response)
-    //#
-    //# + text - the text to be analyzed
-    //# + return - If successful, returns json payload of the responseponse. Else returns error.
-    //public remote function getDocumentSentiment(string text) returns json|error;
+    # Get the document sentiment portion of the payload (of the sentiment response)
+    #
+    # + text - the text to be analyzed
+    # + return - If successful, returns json payload of the responseponse. Else returns error.
+    public remote function getDocumentSentiment(string text) returns DocumentSentiment|error;
 };
 
-remote function Client.getSentimentResponsePayload(string text) returns SentimentResponse|error {
+remote function Client.getSentimentResponsePayload(string text) returns json|error {
     json jsonBody = {
         document: {
             "type": PLAIN_TEXT,
@@ -47,23 +47,21 @@ remote function Client.getSentimentResponsePayload(string text) returns Sentimen
 
     if (httpResponse is http:Response) {
         json jsonPayload = check httpResponse.getJsonPayload();
-        var convertedSentimentResponse = convertJSONToSentimentResponseType(jsonPayload);
-        io:println("JsonPayload: ", jsonPayload);
-        SentimentResponse sentimentResponse = check SentimentResponse.convert(jsonPayload);
-        return sentimentResponse;
+        return jsonPayload;
     } else {
         return httpResponse;
     }
 }
 
-//remote function Client.getDocumentSentiment(string text) returns json|error {
-//    var sentimentResponse = self->getSentimentResponsePayload(text);
-//    if (sentimentResponse is json) {
-//        return sentimentResponse.documentSentiment;
-//    } else {
-//        return sentimentResponse;
-//    }
-//}
+remote function Client.getDocumentSentiment(string text) returns DocumentSentiment|error {
+    var sentimentResponsePayload = self->getSentimentResponsePayload(text);
+    if (sentimentResponsePayload is json) {
+        DocumentSentiment documentSentiment = check DocumentSentiment.convert(sentimentResponsePayload.documentSentiment);
+        return documentSentiment;
+    } else {
+        return sentimentResponsePayload;
+    }
+}
 
 function Client.init(GoogleAPIConfig googleApiConfig) {
     http:AuthConfig? authConfig = googleApiConfig.clientConfig.auth;

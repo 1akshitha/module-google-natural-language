@@ -25,6 +25,10 @@ public type SentimentResponse record {
     Sentence[] sentences;
 };
 
+//public type Sentences record {
+//   Sentence[] sentences;
+//};
+
 
 //   "documentSentiment": {
 //     "magnitude": 0.4,
