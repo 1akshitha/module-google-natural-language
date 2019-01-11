@@ -11,10 +11,8 @@ CLIENT_SECRET="Your client secret"
 REFRESH_TOKEN="Your refresh token"
 
 ```
-
-
 Run tests :
-
 ```
+
 ballerina init
 ballerina test google_natural_language_v1 --config ballerina.conf

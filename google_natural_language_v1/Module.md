@@ -82,7 +82,7 @@ Output:
 ## Sentiment Analysis - Example 2
 
 ```ballerina
-    string text2 = "I don't like reading tweets";
+    string text2 = "I don't like Pizza!";
     var sentimentResponse2 = googleApiClient->getSentimentResponsePayload(text2);
     io:println(sentimentResponse2);
 ```

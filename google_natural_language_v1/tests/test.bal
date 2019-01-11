@@ -20,7 +20,6 @@ GoogleAPIConfig googleApiConfig = {
 
 Client googleApiClient = new(googleApiConfig);
 
-
 @test:Config
 function testAssertGetSentimentResponsePayload() {
     string text = "I do not like Pizza!";
